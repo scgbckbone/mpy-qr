@@ -331,11 +331,11 @@ const mp_obj_module_t mp_module_uqr = {
 };
 #endif
 
-#if MICROPY_VERSION >= 0x011300
-MP_REGISTER_MODULE(MP_QSTR_uqr, mp_module_uqr);
-#else
+//#if MICROPY_VERSION >= 0x011300
+//MP_REGISTER_MODULE(MP_QSTR_uqr, mp_module_uqr);
+//#else
 MP_REGISTER_MODULE(MP_QSTR_uqr, mp_module_uqr, 1);
-#endif
+//#endif
 
 // Linking glue for dyno-loaded module
 #if MICROPY_ENABLE_DYNRUNTIME
