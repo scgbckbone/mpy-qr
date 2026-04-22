@@ -27,7 +27,7 @@ typedef struct _mp_obj_rendered_qr_t {
 //
 // Constructor: RenderedQR object
 //
-    STATIC mp_obj_t
+    static mp_obj_t
 rendered_qr_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, const mp_obj_t *all_args)
 {
     mp_arg_check_num(n_args, n_kw, 1, 1, true);
@@ -166,21 +166,21 @@ rendered_qr_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, cons
 // Return width (and height) of QR. Should be a ready-only property (accessor)
 // but I can't figure out how to do that. From 21 to 177 inclusive.
 //
-    STATIC mp_obj_t
+    static mp_obj_t
 rendered_qr_width(mp_obj_t self_in)
 {
     mp_obj_rendered_qr_t *self = MP_OBJ_TO_PTR(self_in);
 
     return MP_OBJ_NEW_SMALL_INT(qrcodegen_getSize(self->rendered));
 }
-STATIC MP_DEFINE_CONST_FUN_OBJ_1(rendered_qr_width_obj, rendered_qr_width);
+static MP_DEFINE_CONST_FUN_OBJ_1(rendered_qr_width_obj, rendered_qr_width);
 
 // rendered_qr_version()
 //
 // Return version (and height) of rendered QR. Should be a ready-only property (accessor)
 // but I can't figure out how to do that. From 1 to 40 inclusive.
 //
-    STATIC mp_obj_t
+    static mp_obj_t
 rendered_qr_version(mp_obj_t self_in)
 {
     mp_obj_rendered_qr_t *self = MP_OBJ_TO_PTR(self_in);
@@ -192,7 +192,7 @@ rendered_qr_version(mp_obj_t self_in)
 
     return MP_OBJ_NEW_SMALL_INT(version);
 }
-STATIC MP_DEFINE_CONST_FUN_OBJ_1(rendered_qr_version_obj, rendered_qr_version);
+static MP_DEFINE_CONST_FUN_OBJ_1(rendered_qr_version_obj, rendered_qr_version);
 
 
 // rendered_qr_packed()
@@ -204,7 +204,7 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_1(rendered_qr_version_obj, rendered_qr_version);
 // - len(pixels) == W*H//8
 // - 0 < (pad=W-H) <= 7
 //
-    STATIC mp_obj_t
+    static mp_obj_t
 rendered_qr_packed(mp_obj_t self_in)
 {
     mp_obj_rendered_qr_t *self = MP_OBJ_TO_PTR(self_in);
@@ -243,13 +243,13 @@ rendered_qr_packed(mp_obj_t self_in)
 
     return MP_OBJ_FROM_PTR(rv);
 }
-STATIC MP_DEFINE_CONST_FUN_OBJ_1(rendered_qr_packed_obj, rendered_qr_packed);
+static MP_DEFINE_CONST_FUN_OBJ_1(rendered_qr_packed_obj, rendered_qr_packed);
 
 // rendered_qr_get()
 //
 // Read pixel (module) colour at X, Y
 //
-    STATIC mp_obj_t 
+    static mp_obj_t 
 rendered_qr_get(mp_obj_t self_in, mp_obj_t x_in, mp_obj_t y_in) {
     mp_obj_rendered_qr_t *self = MP_OBJ_TO_PTR(self_in);
 
@@ -260,7 +260,7 @@ rendered_qr_get(mp_obj_t self_in, mp_obj_t x_in, mp_obj_t y_in) {
 
     return rv ? mp_const_true : mp_const_false;
 }
-STATIC MP_DEFINE_CONST_FUN_OBJ_3(rendered_qr_get_obj, rendered_qr_get);
+static MP_DEFINE_CONST_FUN_OBJ_3(rendered_qr_get_obj, rendered_qr_get);
 
 // mp_obj_rendered_qr_print()
 //
@@ -287,7 +287,7 @@ mp_obj_rendered_qr_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kin
 //
 // Finalializer. Needs to free the rendered QR data.
 //
-    STATIC mp_obj_t
+    static mp_obj_t
 rendered_qr_del(mp_obj_t self_in) {
     mp_obj_rendered_qr_t *self = MP_OBJ_TO_PTR(self_in);
 
@@ -302,17 +302,17 @@ rendered_qr_del(mp_obj_t self_in) {
 
     return mp_const_none;
 }
-STATIC MP_DEFINE_CONST_FUN_OBJ_1(rendered_qr_del_obj, rendered_qr_del);
+static MP_DEFINE_CONST_FUN_OBJ_1(rendered_qr_del_obj, rendered_qr_del);
 
 #if !MICROPY_ENABLE_DYNRUNTIME
-STATIC const mp_rom_map_elem_t rendered_qr_locals_dict_table[] = {
+static const mp_rom_map_elem_t rendered_qr_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR___del__), MP_ROM_PTR(&rendered_qr_del_obj) },
     { MP_ROM_QSTR(MP_QSTR_width), MP_ROM_PTR(&rendered_qr_width_obj) },
     { MP_ROM_QSTR(MP_QSTR_get), MP_ROM_PTR(&rendered_qr_get_obj) },
     { MP_ROM_QSTR(MP_QSTR_packed), MP_ROM_PTR(&rendered_qr_packed_obj) },
     { MP_ROM_QSTR(MP_QSTR_version), MP_ROM_PTR(&rendered_qr_version_obj) },
 };
-STATIC MP_DEFINE_CONST_DICT(rendered_qr_locals_dict, rendered_qr_locals_dict_table);
+static MP_DEFINE_CONST_DICT(rendered_qr_locals_dict, rendered_qr_locals_dict_table);
 
 #if (MICROPY_VERSION_MAJOR == 1) && (MICROPY_VERSION_MINOR < 20)
 STATIC const mp_obj_type_t mp_type_rendered_qr = {
@@ -323,7 +323,7 @@ STATIC const mp_obj_type_t mp_type_rendered_qr = {
     .locals_dict = (mp_obj_dict_t *)&rendered_qr_locals_dict,
 };
 #else
-STATIC MP_DEFINE_CONST_OBJ_TYPE(
+static MP_DEFINE_CONST_OBJ_TYPE(
     mp_type_rendered_qr,
     MP_QSTR_RenderedQR,
     MP_TYPE_FLAG_NONE,
@@ -332,11 +332,10 @@ STATIC MP_DEFINE_CONST_OBJ_TYPE(
     locals_dict, &rendered_qr_locals_dict
 );
 #endif
-#endif
 
 
 #if !MICROPY_ENABLE_DYNRUNTIME
-STATIC const mp_rom_map_elem_t mp_module_uqr_globals_table[] = {
+static const mp_rom_map_elem_t mp_module_uqr_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_uqr) },
 
     // Constants
@@ -363,7 +362,7 @@ STATIC const mp_rom_map_elem_t mp_module_uqr_globals_table[] = {
     // compression you need that; so some parts are alnum, and others byte and so on.
 };
 
-STATIC MP_DEFINE_CONST_DICT(mp_module_uqr_globals, mp_module_uqr_globals_table);
+static MP_DEFINE_CONST_DICT(mp_module_uqr_globals, mp_module_uqr_globals_table);
 
 const mp_obj_module_t mp_module_uqr = {
     .base = { &mp_type_module },
