@@ -142,7 +142,7 @@ rendered_qr_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, cons
     }
 
     // make the object we are returning.
-    mp_obj_rendered_qr_t *o = m_new_obj_with_finaliser(mp_obj_rendered_qr_t);
+    mp_obj_rendered_qr_t *o = (mp_obj_rendered_qr_t *)m_malloc_with_finaliser(sizeof(mp_obj_rendered_qr_t));
     o->base.type = type;
     o->rendered = NULL;
 
@@ -314,15 +314,6 @@ static const mp_rom_map_elem_t rendered_qr_locals_dict_table[] = {
 };
 static MP_DEFINE_CONST_DICT(rendered_qr_locals_dict, rendered_qr_locals_dict_table);
 
-#if (MICROPY_VERSION_MAJOR == 1) && (MICROPY_VERSION_MINOR < 20)
-STATIC const mp_obj_type_t mp_type_rendered_qr = {
-    { &mp_type_type },
-    .name = MP_QSTR_RenderedQR,
-    .make_new = rendered_qr_make_new,
-    .print = mp_obj_rendered_qr_print,
-    .locals_dict = (mp_obj_dict_t *)&rendered_qr_locals_dict,
-};
-#else
 static MP_DEFINE_CONST_OBJ_TYPE(
     mp_type_rendered_qr,
     MP_QSTR_RenderedQR,
@@ -370,20 +361,7 @@ const mp_obj_module_t mp_module_uqr = {
 };
 #endif
 
-#if (MICROPY_VERSION_MAJOR == 1) && (MICROPY_VERSION_MINOR < 19)
-// For compat with mpy<1.19, this macro needs a 3rd arg (enable) but
-// this file parsed by micropython/py/makemoduledefs.py
-// and it doesn't understand CPP conditionals... nor comments, so abuse
-// that a little.
-//
-/* This line will be interpreted by makemoduledefs.py, but is a comment.
-MP_REGISTER_MODULE(MP_QSTR_uqr, mp_module_uqr, 1);
-*/
-#undef MP_REGISTER_MODULE
-#define MP_REGISTER_MODULE(a,b)       /*empty*/
-#endif
-
-MP_REGISTER_MODULE/**/(MP_QSTR_uqr, mp_module_uqr);
+MP_REGISTER_MODULE(MP_QSTR_uqr, mp_module_uqr);
 
 // Linking glue for dyno-loaded module
 #if MICROPY_ENABLE_DYNRUNTIME
